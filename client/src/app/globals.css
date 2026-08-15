@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fafafa;
+  --bg-elevated: #ffffff;
+  --border: #e5e5e5;
+  --text: #171717;
+  --text-muted: #6b7280;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --focus-ring: #6366f1;
+}
+
+.dark {
+  --bg: #0a0a0a;
+  --bg-elevated: #141414;
+  --border: #262626;
+  --text: #f5f5f5;
+  --text-muted: #a1a1aa;
+  --accent: #818cf8;
+  --accent-hover: #6366f1;
+  --focus-ring: #818cf8;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background-color: var(--bg);
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Visible, consistent focus ring for keyboard navigation (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
