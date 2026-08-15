@@ -20,12 +20,18 @@ const DEFAULT_FILTERS: ProductFilters = {
 
 export default function ProductExplorer() {
   const [filters, setFilters] = useState<ProductFilters>(DEFAULT_FILTERS);
+  // Bumped on every reset so SearchBox remounts and clears its own internal
+  // (debounced) input state — it isn't otherwise controlled by `filters`.
+  const [resetCount, setResetCount] = useState(0);
 
   const patchFilters = useCallback((patch: Partial<ProductFilters>) => {
     setFilters((prev) => ({ ...prev, ...patch }));
   }, []);
 
-  const resetFilters = useCallback(() => setFilters(DEFAULT_FILTERS), []);
+  const resetFilters = useCallback(() => {
+    setFilters(DEFAULT_FILTERS);
+    setResetCount((n) => n + 1);
+  }, []);
 
   const { data, isLoading, isError, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
     useProducts(filters);
@@ -45,7 +51,7 @@ export default function ProductExplorer() {
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <div className="mb-6 flex flex-col gap-4">
         <div className="max-w-md">
-          <SearchBox onSearch={(search) => patchFilters({ search })} />
+          <SearchBox key={resetCount} onSearch={(search) => patchFilters({ search })} />
         </div>
         <FilterPanel filters={filters} onChange={patchFilters} />
       </div>
